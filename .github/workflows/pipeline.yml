@@ -2,7 +2,7 @@ name: AWS example workflow
 on:
   push
 jobs:
-  S3PackageUpload:
+  testing_with_pytest:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
