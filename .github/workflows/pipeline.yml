@@ -1,0 +1,24 @@
+name: AWS example workflow
+on:
+  push
+jobs:
+  S3PackageUpload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.1'
+            
+      - name: install poetry
+        run: pip install poetry
+
+      - name: install dependencies
+        run: poetry install --with dev
+
+      - name: test code
+        run: poetry run pytest -x
+
