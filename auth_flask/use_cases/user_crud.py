@@ -1,13 +1,22 @@
 from auth_flask.entity.user import User
 from auth_flask.adapters.interfaces.user_repository import UserRepo
+from auth_flask.adapters.interfaces.hash import HashManager
 
 
 class UserCrud:
-    def __init__(self, repository: UserRepo):
+    def __init__(self, repository: UserRepo, hash_manager: HashManager):
         self.repository = repository
+        self.hash_manager = hash_manager
 
     def create_user(self, user_data: dict):
-        user = User(**user_data)
+        user_dict = {
+            'username': user_data['username'],
+            'email': user_data['email'],
+            'hashed_password': self.hash_manager.hash_password(
+                user_data['password']
+            ),
+        }
+        user = User(**user_dict)
         self.repository.save_user(user)
 
     def update_user(self, user_data: dict):

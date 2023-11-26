@@ -23,9 +23,3 @@ class Token:
 
     def to_dict(self):
         return asdict(self)
-
-
-@dataclass
-class Claim:
-    user_id: int
-    roles: List[str]

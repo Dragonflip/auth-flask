@@ -1,4 +1,4 @@
-from auth_flask.entity.token import Token, Claim
+from auth_flask.entity.token import Token
 from datetime import datetime
 
 
@@ -7,7 +7,7 @@ class TokenManager:
         error_string = f'Metodo ainda nao implementado para os parametros {user_id, expiration_time}'
         raise NotImplementedError(error_string)
 
-    def validate_token(self, token: Token) -> Claim:
+    def validate_token(self, token: Token) -> dict:
         error_string = (
             f'Metodo ainda nao implementado para o parametro {token}'
         )
