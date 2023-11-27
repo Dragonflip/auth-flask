@@ -4,9 +4,8 @@ import re
 
 @dataclass
 class User:
-    user_id: int
     username: str
-    password_hash: str
+    password: str
     email: str
 
     @classmethod
