@@ -17,11 +17,13 @@ class Authentication:
         self.token_manager = token_manager
         self.hash_manager = hash_manager
 
-    def authenticate(self, user_id: int, password: str):
-        user = self.repository.get_user_by_id(user_id)
+    def authenticate(self, username: str, password: str):
+        user = self.repository.get_user_by_username(username)
         if user and self.hash_manager.check_password(password, user.password):
             expiration_date = datetime.today() + timedelta(days=1)
-            return self.token_manager.generate_token(user_id, expiration_date)
+            return self.token_manager.generate_token(
+                user.username, expiration_date
+            )
         return None
 
     def verify_token(self, token_dict: dict) -> Optional[dict]:
