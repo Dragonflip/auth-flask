@@ -19,9 +19,7 @@ class Authentication:
 
     def authenticate(self, user_id: int, password: str):
         user = self.repository.get_user_by_id(user_id)
-        if user and self.hash_manager.check_password(
-            password, user.password_hash
-        ):
+        if user and self.hash_manager.check_password(password, user.password):
             expiration_date = datetime.today() + timedelta(days=1)
             return self.token_manager.generate_token(user_id, expiration_date)
         return None

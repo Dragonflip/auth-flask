@@ -3,7 +3,9 @@ from datetime import datetime
 
 
 class TokenManager:
-    def generate_token(self, user_id: int, expiration_time: datetime) -> Token:
+    def generate_token(
+        self, username: str, expiration_time: datetime
+    ) -> Token:
         error_string = f'Metodo ainda nao implementado para os parametros {user_id, expiration_time}'
         raise NotImplementedError(error_string)
 
