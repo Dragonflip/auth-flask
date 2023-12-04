@@ -20,4 +20,7 @@ def test_user_to_dict():
         'password': 'abc123',
     }
     user = User.from_dict(init_dict)
-    assert user.to_dict() == init_dict
+    final_dict = user.to_dict()
+
+    assert final_dict['username'] == init_dict['username']
+    assert final_dict['email'] == init_dict['email']

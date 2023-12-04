@@ -3,17 +3,17 @@ from auth_flask.entity.user import User
 
 
 class UserRepo:
-    def get_user_by_username(self, username: str) -> User:
+    def get_user_by_id(self, id: int) -> User:
         raise NotImplemented
 
-    def delete_user(self, user: User) -> None:
+    def delete_user(self, id: int) -> None:
         raise NotImplemented
 
-    def save_user(self, user: User) -> None:
+    def create_user(self, data: dict) -> None:
         raise NotImplemented
 
     def list_users(self) -> List[User]:
         raise NotImplemented
 
-    def update_user(self, user: User) -> User:
+    def update_user(self, id: int, data: dict) -> User:
         raise NotImplemented

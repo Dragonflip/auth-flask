@@ -1,5 +1,8 @@
+from typing_extensions import TypedDict
 from auth_flask.entity.token import Token
 from datetime import datetime
+
+Decoded = TypedDict('Decoded', {'usenamr': str, 'exp': int})
 
 
 class TokenManager:
@@ -9,7 +12,7 @@ class TokenManager:
         error_string = f'Metodo ainda nao implementado para os parametros {user_id, expiration_time}'
         raise NotImplementedError(error_string)
 
-    def validate_token(self, token: Token) -> dict:
+    def decode_token(self, token: Token) -> Decoded:
         error_string = (
             f'Metodo ainda nao implementado para o parametro {token}'
         )

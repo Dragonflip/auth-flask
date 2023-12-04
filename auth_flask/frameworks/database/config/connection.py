@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import Session
 
 
 class DBConnectionHandler:
@@ -8,7 +9,7 @@ class DBConnectionHandler:
             'sqlite:///auth_flask/frameworks/database/database.db'
         )
         self.__engine = self.create_engine()
-        self.session = None
+        self.session: Session | None = None
 
     def create_engine(self):
         engine = create_engine(self.__connection_string)

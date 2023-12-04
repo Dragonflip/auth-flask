@@ -7,18 +7,23 @@ class UserCrud:
         self.repository = repository
 
     def create_user(self, user: User):
-        self.repository.save_user(user)
+        user_data = user.to_dict()
+        return self.repository.create_user(user_data)
 
-    def update_user(self, user: User):
-        user = self.repository.update_user(user)
+    def get_user_by_id(self, id: int):
+        user_model = self.repository.get_user_by_id(id)
+        user = User.from_dict(user_model.__dict__)
         return user
 
-    def get_user_by_username(self, username: str):
-        return self.repository.get_user_by_username(username)
-
-    def delete_user_by_username(self, username: str):
-        user = self.get_user_by_username(username)
-        self.repository.delete_user(user)
-
     def list_users(self):
-        return self.repository.list_users()
+        users_model = self.repository.list_users()
+        return [User.from_dict(user.__dict__) for user in users_model]
+
+    def delete_user_by_id(self, id: int):
+        return self.repository.delete_user(id)
+
+    def update_user(self, id: int, data: dict):
+        if not self.repository.update_user(id, data):
+            return False
+        user = self.get_user_by_id(id)
+        return user

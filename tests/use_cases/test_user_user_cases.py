@@ -32,6 +32,14 @@ def db_connection_handler():
 
 
 @fixture
+def use_case(db_connection_handler):
+    hash_manager = HashBcrypt()
+    user_repo = DatabaseAdapter(db_connection_handler, hash_manager)
+    use_case = UserCrud(user_repo)
+    return use_case
+
+
+@fixture
 def user():
     user_dict = {
         'username': 'joao',
@@ -42,40 +50,42 @@ def user():
     return user
 
 
-def test_list_user(user, db_connection_handler):
-    hash_manager = HashBcrypt()
-    user_repo = DatabaseAdapter(db_connection_handler, hash_manager)
-    caso_uso_user = UserCrud(user_repo)
+def test_create_user(user, use_case):
+    assert use_case.create_user(user)
 
-    caso_uso_user.create_user(user)
-    users = caso_uso_user.list_users()
 
+def test_list_all_users(user, use_case):
+    use_case.create_user(user)
+    users = use_case.list_users()
     assert len(users) == 1
     assert users[0].username == user.username
-    assert users[0].email == user.email
 
 
-def test_delete_user(user, db_connection_handler):
-    hash_manager = HashBcrypt()
-    user_repo = DatabaseAdapter(db_connection_handler, hash_manager)
-    caso_uso_user = UserCrud(user_repo)
+def test_get_by_id(user, use_case):
+    use_case.create_user(user)
+    new_user = use_case.get_user_by_id(1)
+    assert new_user.username == user.username
+    assert new_user.email == user.email
 
-    caso_uso_user.create_user(user)
-    caso_uso_user.delete_user_by_username(user.username)
-    users = caso_uso_user.list_users()
 
+def test_delete_user(user, use_case):
+    use_case.create_user(user)
+    use_case.delete_user_by_id(1)
+    users = use_case.list_users()
     assert len(users) == 0
 
 
-def test_update_user(user, db_connection_handler):
+def test_update_user(user, use_case):
+    use_case.create_user(user)
+    update = {'email': 'test@email.com'}
+    new_user = use_case.update_user(1, update)
+    assert new_user.email == update.get('email')
+
+
+def test_update_password(user, use_case):
     hash_manager = HashBcrypt()
-    user_repo = DatabaseAdapter(db_connection_handler, hash_manager)
-    caso_uso_user = UserCrud(user_repo)
-
-    caso_uso_user.create_user(user)
-    user.email = 'jp@email.com'
-    caso_uso_user.update_user(user)
-    user_from_db = caso_uso_user.get_user_by_username(user.username)
-
-    assert user_from_db.username == user.username
-    assert user_from_db.email == user.email
+    use_case.create_user(user)
+    new_password = 'empadao_frango'
+    update = {'password': new_password}
+    new_user = use_case.update_user(1, update)
+    assert hash_manager.check_password(new_password, new_user.password)
