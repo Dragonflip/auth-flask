@@ -26,10 +26,8 @@ class Authentication:
             )
         return None
 
-    def verify_token(self, token_dict: dict) -> Optional[dict]:
-        token = Token.from_dict(**token_dict)
-        claim = self.token_manager.validate_token(token)
-
+    def decode_token(self, token: str) -> Optional[dict]:
+        claim = self.token_manager.decode_token(token)
         if claim:
             return claim
         return None

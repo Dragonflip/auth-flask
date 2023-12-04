@@ -12,7 +12,7 @@ def test_generate_token():
     token_manager.__dict__['_TokenJWT__secret_key'] = secret_key
     token_manager.__dict__['_TokenJWT__secret_key'] = algorithm
     token = token_manager.generate_token(username, exp_date)
-    decoded = token_manager.decode_token(token)
+    decoded = token_manager.decode_token(token.token_value)
 
     assert decoded.get('username') == username
     assert decoded.get('exp')

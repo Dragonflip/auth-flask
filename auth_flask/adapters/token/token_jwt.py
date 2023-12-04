@@ -25,10 +25,10 @@ class TokenJWT(TokenManager):
         )
         return token
 
-    def decode_token(self, token):
+    def decode_token(self, token: str):
         try:
             decoded_value = jwt.decode(
-                token.token_value,
+                token,
                 self.__secret_key,
                 algorithms=[self.__algorithm],
             )

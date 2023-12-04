@@ -6,6 +6,9 @@ class UserRepo:
     def get_user_by_id(self, id: int) -> User:
         raise NotImplemented
 
+    def get_user_by_username(self, username: str) -> User:
+        raise NotImplemented
+
     def delete_user(self, id: int) -> None:
         raise NotImplemented
 

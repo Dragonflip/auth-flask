@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from auth_flask.entity.user import User
 from auth_flask.adapters.database.user_repository import DatabaseAdapter
 from auth_flask.frameworks.database.config.connection import (
@@ -8,8 +8,12 @@ from auth_flask.adapters.hash.hash_password import HashBcrypt
 from auth_flask.frameworks.database.models.user_model import UserModel
 from auth_flask.use_cases.user_crud import UserCrud
 from auth_flask.adapters.serializers.user import UserSerializer
+from auth_flask.frameworks.flask_app.views.authentication_view import (
+    token_required,
+)
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Blueprint('user', __name__)
 
 hash_manager = HashBcrypt()
 db_connection_handler = DBConnectionHandler()
@@ -18,6 +22,7 @@ user_crud = UserCrud(db_adapter)
 
 
 @app.route('/users', methods=['GET'])
+@token_required
 def get_all_users():
     users = user_crud.list_users()
     user_list = [UserSerializer.serialize(user) for user in users]

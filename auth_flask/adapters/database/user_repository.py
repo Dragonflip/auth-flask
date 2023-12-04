@@ -50,6 +50,16 @@ class DatabaseAdapter(UserRepo):
                 users = [user for user in user_rows]
                 return users
 
+    def get_user_by_username(self, username: str):
+        with DBConnectionHandler() as db:
+            if db.session:
+                user = (
+                    db.session.query(UserModel)
+                    .filter(UserModel.username == username)
+                    .one()
+                )
+                return user
+
     def get_user_by_id(self, id: int):
         with DBConnectionHandler() as db:
             if db.session:
